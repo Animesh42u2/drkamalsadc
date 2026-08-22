@@ -111,6 +111,44 @@ export default function Testimonials() {
 
   return (
     <section style={styles.section}>
+      {/* Fine-grained breakpoints on top of the isMobile on/off switch, so
+          this scales smoothly instead of jumping straight from desktop to
+          the single "mobile" layout. */}
+      <style>{`
+        @keyframes growWidth {
+          from { width: 0% }
+          to   { width: 100% }
+        }
+        .ts-review-cta {
+          width: 100%;
+          box-sizing: border-box;
+        }
+        .ts-author {
+          box-sizing: border-box;
+        }
+        @media (max-width: 900px) {
+          .ts-review-cta { grid-template-columns: 1fr !important; }
+        }
+        @media (max-width: 640px) {
+          .ts-controls { gap: 8px !important; }
+          .ts-nav-btn { width: 34px !important; height: 34px !important; }
+          .ts-dots { max-width: 180px !important; }
+        }
+        @media (max-width: 480px) {
+          .ts-author { flex-direction: column !important; gap: 8px !important; }
+          .ts-author-name { text-align: center !important; }
+          .ts-cta-image { min-height: 160px !important; }
+          .ts-cta-rating { justify-content: center !important; }
+          .ts-cta-content { align-items: center !important; text-align: center !important; }
+          .ts-cta-body { max-width: none !important; }
+          .ts-cta-button { width: 100% !important; }
+        }
+        @media (max-width: 360px) {
+          .ts-card { padding: 18px 14px !important; }
+          .ts-dots { max-width: 150px !important; gap: 4px !important; }
+        }
+      `}</style>
+
       <p style={styles.eyebrow}>Testimonials</p>
       <h2 style={styles.heading}>
         What <span style={{ color: COLORS.blue }}>Our Patients</span> Say About Us
@@ -119,6 +157,7 @@ export default function Testimonials() {
 
       {/* Card */}
       <div
+        className="ts-card"
         style={{
           ...styles.card,
           opacity: animating ? 0 : 1,
@@ -183,6 +222,7 @@ export default function Testimonials() {
 
         {/* Author */}
         <div
+          className="ts-author"
           style={{
             ...styles.author,
             opacity: animating ? 0 : 1,
@@ -215,19 +255,19 @@ export default function Testimonials() {
               onError={() => setAvatarErrors((e) => ({ ...e, [current]: true }))}
             />
           )}
-          <div style={styles.authorName}>{r.name}</div>
+          <div className="ts-author-name" style={styles.authorName}>{r.name}</div>
         </div>
       </div>
 
       {/* Controls */}
-      <div style={styles.controls}>
-        <button style={styles.navBtn} onClick={() => handleNav(current - 1)} aria-label="Previous">
+      <div className="ts-controls" style={styles.controls}>
+        <button className="ts-nav-btn" style={styles.navBtn} onClick={() => handleNav(current - 1)} aria-label="Previous">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={COLORS.blue} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="15 18 9 12 15 6" />
           </svg>
         </button>
 
-        <div style={styles.dots}>
+        <div className="ts-dots" style={styles.dots}>
           {reviews.map((_, i) => {
             const isNear = Math.abs(i - current) <= 2 || i === 0 || i === reviews.length - 1;
             return (
@@ -247,7 +287,7 @@ export default function Testimonials() {
           })}
         </div>
 
-        <button style={styles.navBtn} onClick={() => handleNav(current + 1)} aria-label="Next">
+        <button className="ts-nav-btn" style={styles.navBtn} onClick={() => handleNav(current + 1)} aria-label="Next">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={COLORS.blue} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="9 18 15 12 9 6" />
           </svg>
@@ -255,14 +295,16 @@ export default function Testimonials() {
       </div>
 
       {/* Leave a review CTA */}
-      <div style={{ ...container, marginTop: "clamp(40px, 6vw, 64px)" }}>
+      <div style={{ ...container, marginTop: "clamp(40px, 6vw, 64px)", boxSizing: "border-box" }}>
         <div
+          className="ts-review-cta"
           style={{
             ...styles.reviewCta,
             gridTemplateColumns: isMobile ? "1fr" : "0.9fr 1.1fr",
           }}
         >
           <div
+            className="ts-cta-image"
             style={{
               ...styles.reviewCtaImage,
               backgroundImage: "url('/waiting-area.jpeg')",
@@ -271,15 +313,15 @@ export default function Testimonials() {
             role="img"
             aria-label="Anupama Dental Clinic waiting area"
           />
-          <div style={styles.reviewCtaContent}>
-            <div style={styles.reviewCtaRating}>
+          <div className="ts-cta-content" style={styles.reviewCtaContent}>
+            <div className="ts-cta-rating" style={styles.reviewCtaRating}>
               <span style={styles.reviewCtaStars}>★★★★★</span>
               <span style={styles.reviewCtaRatingText}>
                 {rating} · {reviewCount} Google reviews
               </span>
             </div>
             <h3 style={styles.reviewCtaHeading}>Enjoyed your visit?</h3>
-            <p style={styles.reviewCtaBody}>
+            <p className="ts-cta-body" style={styles.reviewCtaBody}>
               Your feedback helps other patients in Udala find us and helps us keep improving. It only takes a
               minute.
             </p>
@@ -287,6 +329,7 @@ export default function Testimonials() {
               href={GOOGLE_REVIEW_URL}
               target="_blank"
               rel="noopener noreferrer"
+              className="ts-cta-button"
               style={{
                 ...styles.reviewCtaButton,
                 width: isMobile ? "100%" : "auto",
@@ -301,14 +344,6 @@ export default function Testimonials() {
           </div>
         </div>
       </div>
-
-      {/* Keyframe injection */}
-      <style>{`
-        @keyframes growWidth {
-          from { width: 0% }
-          to   { width: 100% }
-        }
-      `}</style>
     </section>
   );
 }
@@ -320,6 +355,9 @@ const styles: Record<string, React.CSSProperties> = {
     padding: "clamp(40px, 8vw, 80px) clamp(16px, 6%, 80px)" as unknown as string,
     background: COLORS.white,
     textAlign: "center",
+    width: "100%",
+    boxSizing: "border-box",
+    overflowX: "hidden",
   },
   eyebrow: {
     fontSize: 11,
@@ -343,6 +381,8 @@ const styles: Record<string, React.CSSProperties> = {
   },
   card: {
     maxWidth: 720,
+    width: "100%",
+    boxSizing: "border-box",
     margin: "0 auto",
     background: "#f5faff",
     borderRadius: 20,
@@ -390,6 +430,7 @@ const styles: Record<string, React.CSSProperties> = {
     color: "#173250",
     fontStyle: "italic",
     marginBottom: "clamp(20px, 4vw, 36px)" as unknown as string,
+    wordBreak: "break-word",
   },
   author: {
     display: "flex",
@@ -457,6 +498,7 @@ const styles: Record<string, React.CSSProperties> = {
     border: "none",
     cursor: "pointer",
     padding: 0,
+    flexShrink: 0,
   },
   reviewCta: {
     display: "grid",
