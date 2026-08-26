@@ -180,7 +180,7 @@ const OurProcess: FC = () => {
               highest level. We provide specialist, general and cosmetic dental treatments.
             </p>
             <Link
-              to="/services"
+              to="/Treatments"
               style={ctaHover.hovered ? { ...btnPrimary, ...btnPrimaryHover } : btnPrimary}
               {...ctaHover.bind}
             >

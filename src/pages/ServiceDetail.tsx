@@ -450,6 +450,34 @@ const ServiceDetail: FC = () => {
         </div>
       </section>
 
+      {/* ── TYPES OF [SERVICE] ── */}
+      {types.length > 0 && (
+      <section style={sectionTint}>
+        <div style={{ ...container, textAlign: "center" }}>
+          <motion.h2
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-60px" }}
+            variants={fadeUp}
+            style={{ ...heading, fontSize: "clamp(20px, 3vw, 28px)", marginBottom: 28 }}
+          >
+            Types of {service.title}
+          </motion.h2>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(auto-fit, minmax(150px, 1fr))",
+              gap: 16,
+            }}
+          >
+            {types.map((t, i) => (
+              <TypeCard key={i} title={t.title} index={i} />
+            ))}
+          </div>
+        </div>
+      </section>
+      )}
+
       {/* ── WHAT IS [SERVICE] ── */}
       <section style={section}>
         <div
@@ -520,34 +548,6 @@ const ServiceDetail: FC = () => {
           </motion.div>
         </div>
       </section>
-
-      {/* ── TYPES OF [SERVICE] ── */}
-      {types.length > 0 && (
-      <section style={sectionTint}>
-        <div style={{ ...container, textAlign: "center" }}>
-          <motion.h2
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-60px" }}
-            variants={fadeUp}
-            style={{ ...heading, fontSize: "clamp(20px, 3vw, 28px)", marginBottom: 28 }}
-          >
-            Types of {service.title}
-          </motion.h2>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(auto-fit, minmax(150px, 1fr))",
-              gap: 16,
-            }}
-          >
-            {types.map((t, i) => (
-              <TypeCard key={i} title={t.title} index={i} />
-            ))}
-          </div>
-        </div>
-      </section>
-      )}
 
       {/* ── WHAT'S INCLUDED ── */}
       <section style={section}>
